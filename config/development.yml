@@ -1,0 +1,20 @@
+server:
+  port: 3041
+circle:
+  apiKey: 'TEST_API_KEY:3710354139bba9490dbf27102da20363:744e55937ca44b1537010d5e1c4cbe54'
+  app_id: '9554667d-e16a-5a9d-bf88-ee0648034a49'
+
+db:
+  type: 'postgres'
+  host: 'localhost'
+  username: 'postgres'
+  password: '1950'
+  database: 'circle_backend_service'
+  synchronize: true
+  schema: 'public'
+  charset: 'UTF8_GENERAL_CI'
+  port: 5432
+
+jwt:
+  secret: 'YnsErysy*@455HfgfFGF445667SSDS2342323DFDFDFe3543cvcdfd@@!!weTT5%&&FFHvvdd*Brs49'
+  expire: 600000
