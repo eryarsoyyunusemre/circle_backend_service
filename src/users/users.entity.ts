@@ -1,4 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  DeleteDateColumn,
+  Entity,
+  PrimaryColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class UsersEntity extends BaseEntity {
@@ -27,11 +33,11 @@ export class UsersEntity extends BaseEntity {
   user_challenge_id: string;
 
   @Column({ nullable: true, type: 'varchar' })
-  user_token: string;
-
-  @Column({ nullable: true, type: 'varchar' })
   user_wallet_id: string;
 
   @Column({ nullable: true, type: 'varchar' })
   user_wallet_address: string;
+
+  @DeleteDateColumn({ nullable: true })
+  deletedDate: Date;
 }

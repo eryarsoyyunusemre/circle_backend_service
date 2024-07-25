@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from './users.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/users.dto';
+import { CreateUserDto, updateUserDto } from './dto/users.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,7 +13,14 @@ export class UsersService {
 
   async getAllUser() {
     try {
-      return await this.usersRepository.find();
+      const getUser = await this.usersRepository.find();
+
+      // Kullanıcıların şifre değerinin dönmemesi için siliyoruz
+      getUser.map((data) => {
+        delete data.password;
+      });
+
+      return getUser;
     } catch (error) {
       throw error;
     }
@@ -21,11 +28,22 @@ export class UsersService {
 
   async getUser(uuid: string) {
     try {
-      return await this.usersRepository.findOne({
+      const getUser = await this.usersRepository.findOne({
         where: {
           uuid,
         },
       });
+
+      if (!getUser) {
+        throw new InternalServerErrorException(
+          'Bu idye sahip kullanıcı bulunamadı!',
+        );
+      }
+
+      // Kullanıcıların şifre değerinin dönmemesi için siliyoruz
+      delete getUser?.password;
+
+      return getUser;
     } catch (error) {
       throw error;
     }
@@ -45,6 +63,30 @@ export class UsersService {
         );
       }
       return await this.usersRepository.save(data.toEntity());
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUser(uuid: string, data: updateUserDto) {
+    try {
+      // Kullanıcı varmı diye sorguluyoruz!
+      await this.getUser(uuid);
+
+      return await this.usersRepository.update({ uuid }, data.toEntity());
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deletUser(uuid: string) {
+    try {
+      // Kullanıcı varmı diye sorguluyoruz!
+      await this.getUser(uuid);
+
+      return await this.usersRepository.softDelete({
+        uuid,
+      });
     } catch (error) {
       throw error;
     }

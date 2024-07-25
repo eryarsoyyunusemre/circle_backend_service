@@ -3,7 +3,6 @@ import { RoleEnum } from '../enum/enum';
 import { UsersEntity } from '../users.entity';
 import * as bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { Type } from 'class-transformer';
 
 export class CreateUserDto {
   uuid: string;
@@ -27,6 +26,17 @@ export class CreateUserDto {
   @IsEnum(RoleEnum)
   role?: RoleEnum = RoleEnum.USER;
 
+  @IsOptional()
+  @IsString()
+  user_challenge_id: string;
+
+  @IsOptional()
+  @IsString()
+  user_wallet_id: string;
+
+  @IsOptional()
+  @IsString()
+  user_wallet_address: string;
   toEntity(): UsersEntity {
     const entity = new UsersEntity();
     entity.uuid = uuidv4();
@@ -36,6 +46,63 @@ export class CreateUserDto {
     entity.lastname = this.lastname;
     entity.status = this.status;
     entity.role = this.role;
+    entity.user_challenge_id = this.user_challenge_id;
+    entity.user_wallet_id = this.user_wallet_id;
+    entity.user_wallet_address = this.user_wallet_address;
+    return entity;
+  }
+}
+
+export class updateUserDto {
+  @IsOptional()
+  uuid: string;
+  @IsString()
+  username: string;
+
+  @IsOptional()
+  @IsString()
+  password: string;
+
+  @IsOptional()
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  lastname: string;
+
+  @IsOptional()
+  @IsNumber()
+  status?: number = 1;
+
+  @IsOptional()
+  @IsEnum(RoleEnum)
+  role?: RoleEnum = RoleEnum.USER;
+
+  @IsOptional()
+  @IsString()
+  user_challenge_id: string;
+
+  @IsOptional()
+  @IsString()
+  user_wallet_id: string;
+
+  @IsOptional()
+  @IsString()
+  user_wallet_address: string;
+  toEntity(): UsersEntity {
+    const entity = new UsersEntity();
+    entity.username = this.username;
+    if (this.password) {
+      entity.password = bcrypt.hashSync(this?.password, 10);
+    }
+    entity.name = this.name;
+    entity.lastname = this.lastname;
+    entity.status = this.status;
+    entity.role = this.role;
+    entity.user_challenge_id = this.user_challenge_id;
+    entity.user_wallet_id = this.user_wallet_id;
+    entity.user_wallet_address = this.user_wallet_address;
     return entity;
   }
 }
