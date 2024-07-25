@@ -6,10 +6,11 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersService } from '../users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersEntity } from '../users/users.entity';
+import { TransferEntity } from './transfer.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UsersEntity]),
+    TypeOrmModule.forFeature([TransferEntity, UsersEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [CircleController],

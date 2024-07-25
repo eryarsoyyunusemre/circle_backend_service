@@ -21,6 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@circle-fin/developer-controlled-wallets": "^4.1.1",
+    "@circle-fin/w3s-pw-web-sdk": "^1.1.1",
     "@nestjs/common": "^10.3.9",
     "@nestjs/core": "^10.3.9",
     "@nestjs/jwt": "^10.2.0",
@@ -34,6 +36,7 @@
     "config": "^3.3.12",
     "cross-env": "^7.0.3",
     "jsonwebtoken": "^9.0.2",
+    "node-forge": "^1.3.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",

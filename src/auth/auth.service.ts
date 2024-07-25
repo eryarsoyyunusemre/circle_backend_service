@@ -28,7 +28,6 @@ export class AuthService {
       lastname: user.lastname,
       role: user.role,
       status: user.status,
-      user_challenge_id: user.user_challenge_id,
       user_wallet_id: user.user_wallet_id,
       user_wallet_address: user.user_wallet_address,
     };

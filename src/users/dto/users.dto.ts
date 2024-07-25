@@ -28,10 +28,6 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  user_challenge_id: string;
-
-  @IsOptional()
-  @IsString()
   user_wallet_id: string;
 
   @IsOptional()
@@ -46,7 +42,6 @@ export class CreateUserDto {
     entity.lastname = this.lastname;
     entity.status = this.status;
     entity.role = this.role;
-    entity.user_challenge_id = this.user_challenge_id;
     entity.user_wallet_id = this.user_wallet_id;
     entity.user_wallet_address = this.user_wallet_address;
     return entity;
@@ -81,10 +76,6 @@ export class updateUserDto {
 
   @IsOptional()
   @IsString()
-  user_challenge_id: string;
-
-  @IsOptional()
-  @IsString()
   user_wallet_id: string;
 
   @IsOptional()
@@ -100,7 +91,6 @@ export class updateUserDto {
     entity.lastname = this.lastname;
     entity.status = this.status;
     entity.role = this.role;
-    entity.user_challenge_id = this.user_challenge_id;
     entity.user_wallet_id = this.user_wallet_id;
     entity.user_wallet_address = this.user_wallet_address;
     return entity;

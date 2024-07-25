@@ -30,9 +30,6 @@ export class UsersEntity extends BaseEntity {
   role: string;
 
   @Column({ nullable: true, type: 'varchar' })
-  user_challenge_id: string;
-
-  @Column({ nullable: true, type: 'varchar' })
   user_wallet_id: string;
 
   @Column({ nullable: true, type: 'varchar' })

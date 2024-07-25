@@ -7,7 +7,6 @@ import { JwtStrategy } from '../core/jwtStrategy';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersEntity } from '../users/users.entity';
-console.log(getConfig.jwt, 'dafadsf');
 
 @Module({
   imports: [
