@@ -58,7 +58,7 @@ export class CircleService {
 
       return res.data.wallets;
     } catch (error) {
-      console.log('error:', error);
+      throw error;
     }
   }
 
@@ -77,18 +77,17 @@ export class CircleService {
 
       return res.data.wallet;
     } catch (error) {
-      console.log('error:', error);
+      throw error;
     }
   }
 
-  async walletTransactions(walletIds: string[]): Promise<void> {
+  async walletTransactions(walletIds: string) {
     try {
       const response = await this.circleDeveloperSdk.listTransactions({
-        walletIds: walletIds,
+        walletIds: [walletIds],
       });
 
-      console.log('response: ', response.data);
-      console.log('amount: ', response.data.transactions[0].amounts);
+      return response.data.transactions;
     } catch (error) {
       throw error;
     }
@@ -121,44 +120,48 @@ export class CircleService {
   }
 
   async transferToken(data: TransferTokenDto) {
-    const { senderUuid, recieveUuid, type, amount } = data;
-    const senderDetails = await this.usersService.getUser(senderUuid);
-    const recieveDetails = await this.usersService.getUser(recieveUuid);
-    const getSenderTokenId = await this.getBalance(senderUuid, type);
-    const res = await this.circleDeveloperSdk.createTransaction({
-      walletId: senderDetails.user_wallet_id,
-      tokenId: getSenderTokenId.token.id,
-      destinationAddress: recieveDetails.user_wallet_address,
-      amounts: [`${amount}`],
-      fee: {
-        type: 'level',
-        config: {
-          feeLevel: 'MEDIUM',
+    try {
+      const { senderUuid, recieveUuid, type, amount } = data;
+      const senderDetails = await this.usersService.getUser(senderUuid);
+      const recieveDetails = await this.usersService.getUser(recieveUuid);
+      const getSenderTokenId = await this.getBalance(senderUuid, type);
+      const res = await this.circleDeveloperSdk.createTransaction({
+        walletId: senderDetails.user_wallet_id,
+        tokenId: getSenderTokenId.token.id,
+        destinationAddress: recieveDetails.user_wallet_address,
+        amounts: [`${amount}`],
+        fee: {
+          type: 'level',
+          config: {
+            feeLevel: 'MEDIUM',
+          },
         },
-      },
-    });
+      });
 
-    const dto = new TransferTokenDto();
-    dto.transferId = res.data.id;
-    dto.senderUuid = senderDetails.uuid;
-    dto.recieveUuid = recieveDetails.uuid;
-    dto.amount = amount;
-    dto.type = type;
+      const dto = new TransferTokenDto();
+      dto.transferId = res.data.id;
+      dto.senderUuid = senderDetails.uuid;
+      dto.recieveUuid = recieveDetails.uuid;
+      dto.amount = amount;
+      dto.type = type;
 
-    await this.transferRepository.save(dto.toEntity());
-    return res.data;
+      await this.transferRepository.save(dto.toEntity());
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
   }
 
   //TODO: Zaten frontend buradaki idye erişecği için  direkt işlemin idsi ile işlem yapabilecek!!
-  //Transfer id ile duruma bakılır!
   async checkTransferState(id: string): Promise<void> {
-    const getTransferId = await this.transferRepository.findOne({});
-    return await this.circleDeveloperSdk
-      .getTransaction({
+    try {
+      const res = await this.circleDeveloperSdk.getTransaction({
         id: id,
-      })
-      .then((res) => {
-        res.data;
       });
+
+      return res.data.transaction;
+    } catch (error) {
+      throw error;
+    }
   }
 }

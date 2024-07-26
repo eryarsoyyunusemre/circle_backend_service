@@ -31,6 +31,15 @@ export class CircleController {
     return await this.circleService.getBalance(uuid, type);
   }
 
+  @Get('checkTransfer/:id')
+  async getTransfer(@Param('id') id: string) {
+    return await this.circleService.checkTransferState(id);
+  }
+
+  @Get('walletTransactions/:id')
+  async walletTransactions(@Param('id') id: string) {
+    return await this.circleService.walletTransactions(id);
+  }
   @Post('createWallet/:uuid')
   async createWallet(@Param('uuid') uuid: string) {
     return await this.circleService.createWallet(uuid).then(() => ({
