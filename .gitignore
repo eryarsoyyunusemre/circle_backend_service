@@ -3,7 +3,7 @@
 /node_modules
 /build
 yarn.lock
-/config/production.yml
+/config
 
 # Logs
 logs
